@@ -71,6 +71,17 @@ model = LGBMClassifier(
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
-print((y_test == y_pred).mean())
-y_pred = model.predict(X_train)
-print((y_train == y_pred).mean())
+print('准确率:', (y_test == y_pred).mean())
+
+y_prob = model.predict_proba(pd.DataFrame({
+    'Age': d.Age,
+    'Sex': d.Sex == 'female',
+    'Pclass': d.Pclass,
+    'Fare': d.Fare,
+    'Parch': d.Parch,
+    'SibSp': d.SibSp,
+    'Embarked': pd.factorize(d.Embarked)[0],
+}))[:, 1] # type: ignore
+
+for i in range(len(d)):
+    print(f'乘客 {d.Name[i]:50s} 存活概率 {y_prob[i] * 100:4.2f}%  实际情况 {"存活" if d.Survived[i] else "死亡"}')

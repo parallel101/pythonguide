@@ -9,5 +9,5 @@ python -m pip install -r requirements.txt
 ## 运行
 
 ```bash
-python 01_titanic/lgbm_classifier.py
+python 01_titanic/test.py
 ```
